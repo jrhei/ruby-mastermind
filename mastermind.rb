@@ -13,16 +13,64 @@ class Game
     public
     def self.start_as_decoder
         game_turns = 1
-        
+        puts "\n\nWhen the game prompts you, enter the color 'red', 'green', 'yellow', 'blue', 'orange', or 'white' into the corresponding position"
         while game_turns <= 12
-            puts game_turns
-
+            player_choice = []
+            #puts game_turns
+            prompt = "Input here: "
+            print prompt
+            length = 0 
+                while length != 4
+                    while user_input = gets.chomp
+                        case user_input
+                        when "red"
+                            player_choice.push("red")
+                            p player_choice
+                            length += 1
+                            break
+                        when "green"
+                            player_choice.push("green")
+                            p player_choice
+                            length += 1
+                            break
+                        when "yellow"
+                            player_choice.push("yellow")
+                            p player_choice
+                            length += 1
+                            break
+                        when "blue"
+                            player_choice.push("blue")
+                            p player_choice
+                            length += 1
+                            break
+                        when "orange"
+                            player_choice.push("orange")
+                            p player_choice
+                            length += 1
+                            break
+                        when "white"
+                            player_choice.push("white")
+                            p player_choice
+                            length += 1
+                            break
+                        else
+                            puts "Invalid input try again."
+                            p player_choice
+                            print prompt
+                        end
+                        
+                    end
+                end
+            p self.get_shuffled
+            #for i in 0..3
             game_turns += 1
         end
     end 
     def self.get_shuffled
         @@color_shuffled
     end
+
+
     choice = 0
     while choice > 3 || choice <= 0
         print "[1] Be the Decoder\n"
