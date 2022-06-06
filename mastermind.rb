@@ -1,3 +1,4 @@
+require 'colorize'
 class Game
     private
     def self.shuffle
@@ -62,14 +63,38 @@ class Game
                     end
                 end
             p self.get_shuffled
-            #for i in 0..3
+            hints = []
+            print "\n------Hint instructions-----\n"
+            print "x means a color is correct but is in the wrong position\n"
+            print "o means a color is correct and is in the correct position\n"
+            print "--------------------------\n"
+            for i in 0..3
+                for y in 0..3
+                    case player_choice[i] 
+
+                    when self.get_shuffled_pos(y)
+                        if i == y
+                            hints.push('x')
+                            
+                        else
+                            hints.push('o')
+                            
+                        end
+                    end
+                end
+            end
+            p hints.shuffle
             game_turns += 1
         end
+        
     end 
     def self.get_shuffled
         @@color_shuffled
     end
 
+    def self.get_shuffled_pos(x)
+        @@color_shuffled[x]
+    end
 
     choice = 0
     while choice > 3 || choice <= 0
