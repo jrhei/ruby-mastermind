@@ -11,7 +11,6 @@ class Game
             @@color_shuffled.pop
         end
     end
-    public
     def self.check_if_winner(hints)
         correct_hints = ["o", "o", "o", "o"]
         if hints == correct_hints
@@ -20,6 +19,8 @@ class Game
             return false
         end
     end
+    public
+    
     def self.start_as_codemaker
         puts "\n\nWhen the game prompts you, enter the color 'red', 'green', 'yellow', 'blue', 'orange', or 'white' into the corresponding position for your code"
 
