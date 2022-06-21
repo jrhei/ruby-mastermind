@@ -14,6 +14,7 @@ class Game
             @@color_shuffled.push(@@colors.shuffle[0])
         end
     end
+
     def self.check_if_winner(hints)
         correct_hints = ["o", "o", "o", "o"]
         if hints == correct_hints
@@ -24,12 +25,17 @@ class Game
     end
     def self.generate_hints(choices, isHuman)
         @@hints = []
-        print "\n------Hint instructions-----\n"
-        print "x means a color is correct but is in the wrong position\n"
-        print "o means a color is correct and is in the correct position\n"
-        print "--------------------------\n"
+        
 
         if isHuman == true
+            temp = []
+            @@color_shuffled.each do |value|
+                temp.push(value)
+            end
+            puts "tempo: "
+            p temp
+            puts 'shuffled code: '
+            p self.get_shuffled
             for i in 0..3
                 for y in 0..3
                     case choices[i] 
@@ -37,16 +43,33 @@ class Game
                     when self.get_shuffled_pos(y)
                         if i == y
                             @@hints.push('o')
+                            choices[i] = 'replace'
+                            self.set_shuffled_code(i)
+                            break
                             
                         else
                             @@hints.push('x')
+                            choices[i] = 'replace'
+                            #@@player_code[i] = 'unset'
+                            self.set_shuffled_code(i)
+                            break
                             
                         end
                     end
                 end
             end
+            puts 'hints: '
             p @@hints.shuffle
+            @@color_shuffled = temp
+
         elsif isHuman == false
+            temp = []
+            @@player_code.each do |value|
+                temp.push(value)
+            end
+            puts "tempo: "
+            p temp
+            puts 'player code: '
             p self.get_player_code
             for i in 0..3
                 for y in 0..3
@@ -55,15 +78,24 @@ class Game
                     when self.get_player_code_pos(y)
                         if i == y
                             @@hints.push('o')
+                            choices[i] = 'replace'
+                            self.set_player_code(i)
+                            break
                             
                         else
                             @@hints.push('x')
+                            choices[i] = 'replace'
+                            #@@player_code[i] = 'unset'
+                            self.set_player_code(i)
+                            break
                             
                         end
                     end
                 end
             end
+            puts 'hints: '
             p @@hints.shuffle
+            @@player_code = temp
         end
         
     end
@@ -82,6 +114,13 @@ class Game
         #if hints == nil
         
         
+    end
+
+    def self.set_player_code(x)
+        @@player_code[x] = 'unset'
+    end
+    def self.set_shuffled_code(x)
+        @@color_shuffled[x] = 'unset'
     end
     public
     
@@ -106,9 +145,13 @@ class Game
         print "\n\n\n"
 
         #self.computer_solver(self.get_hints, player_choice)
+        print "\n------Hint instructions-----\n"
+        print "x means a color is correct but is in the wrong position\n"
+        print "o means a color is correct and is in the correct position\n"
+        print "--------------------------\n"
         while game_turns <= 12
             computer_choice = []
-            puts "Round: #{game_turns}"
+            puts "------\nRound: #{game_turns}"
             length = 0 
             #while length != 4
                 #computer_choice.push(self.take_code)
@@ -116,8 +159,12 @@ class Game
 
                 #length += 1
             #end
-            computer_choice = ['red', 'red', 'red', 'red']
+            #computer_choice = ['red', 'red', 'red', 'red']
+            #puts 'computer choice: '
+            self.shuffle
+            computer_choice = self.get_shuffled
             p computer_choice
+            
             self.generate_hints(computer_choice, false)
             if self.check_if_winner(self.get_hints)
                 p "You have guessed the code!"
@@ -173,7 +220,9 @@ class Game
                 p player_choice
                 length += 1
             end
-            p self.get_shuffled
+            puts 'player choices: '
+            #p self.get_shuffled
+            p player_choice
             self.generate_hints(player_choice, true)
             if self.check_if_winner(self.get_hints)
                 p "You have guessed the code!"
@@ -212,7 +261,6 @@ class Game
         p self.get_shuffled
         self.start_as_decoder
     elsif choice == 2
-        self.shuffle
         self.start_as_codemaker
     end
     
@@ -221,3 +269,65 @@ end
 g = Game.new
 g
 
+
+
+=begin
+# if human
+
+for i in 0..3
+                for y in 0..3
+                    case choices[i] 
+
+                    when self.get_shuffled_pos(y)
+                        if i == y
+                            @@hints.push('o')
+                            break
+                            
+                        else
+                            @@hints.push('x')
+                            break
+                            
+                        end
+                    end
+                end
+            end
+
+#if computer
+        elsif isHuman == false
+            p self.get_player_code
+            index_of_choices = [0,1,2,3]
+            for i in 0..3
+                index_of_choices.each do | index |
+                    case choices[i]
+                        
+                    when self.get_player_code_pos(index)
+                        if i == index
+                            @@hints.push('o')
+                            index_of_choices.pop
+                        end
+                    end
+                end
+            end
+
+=end
+=begin
+p self.get_player_code
+            for i in 0..3
+                for y in 0..3
+                    case choices[i] 
+
+                    when self.get_player_code_pos(y)
+                        if i == y
+                            @@hints.push('o')
+                            break
+                            
+                        else
+                            @@hints.push('x')
+                            break
+                            
+                        end
+                    end
+                end
+            end
+            p @@hints.shuffle
+=end
